@@ -57,4 +57,6 @@ app.post('/chain/mine', (req, res) => {
     });
 });
 
+app.get('/debug', (req, res) => res.send('Server.js with /chain/mine - Deployed ' + new Date()));
+
 app.listen(3001, () => console.log('Blocktree Demo on http://localhost:3001'));
