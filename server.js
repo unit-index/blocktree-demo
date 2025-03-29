@@ -25,4 +25,36 @@ app.get('/chain', (req, res) => {
     });
 });
 
+app.post('/chain/mine', (req, res) => {
+    if (!splitOccurred) {
+        return res.status(400).json({ error: 'Chain split has not occurred yet. Fetch /chain first.' });
+    }
+
+    // Find the highest ID across all chains
+    const allBlocks = [...blocks, ...earthBranch, ...marsBranch];
+    const newId = Math.max(...allBlocks.map(b => b.id)) + 1;
+
+    // Randomly pick Earth or Mars branch
+    const branch = Math.random() > 0.5 ? 'Earth' : 'Mars';
+    const newBlock = {
+        id: newId,
+        location: branch,
+        hash: Math.random().toString(36).substring(2, 8) // Random 6-char hash
+    };
+
+    // Add to the chosen branch
+    if (branch === 'Earth') {
+        earthBranch.push(newBlock);
+    } else {
+        marsBranch.push(newBlock);
+    }
+
+    console.log(`Mined new block: ${branch} ${newId} (${newBlock.hash})`);
+    res.json({
+        mainChain: blocks,
+        earthBranch: earthBranch,
+        marsBranch: marsBranch
+    });
+});
+
 app.listen(3001, () => console.log('Blocktree Demo on http://localhost:3001'));
