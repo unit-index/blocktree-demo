@@ -4,7 +4,7 @@ app.use(express.json());
 
 // Add CORS middleware
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://blocktree.com"); // Match front-end origin
+    res.header("Access-Control-Allow-Origin", "https://blocktree.com");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type");
     if (req.method === "OPTIONS") {
@@ -80,5 +80,20 @@ app.post('/chain/mine', async (req, res) => {
 });
 
 app.get('/debug', (req, res) => res.send('Server.js with /chain/mine - Deployed ' + new Date()));
+
+// New reset endpoint
+app.post('/chain/reset', (req, res) => {
+    blocks = [
+        { id: 0, location: 'Root', hash: 'genesis', timestamp: new Date().toISOString(), prevHash: '0' }
+    ];
+    earthBranch = [];
+    marsBranch = [];
+    splitOccurred = false;
+    res.json({
+        mainChain: blocks,
+        earthBranch: earthBranch,
+        marsBranch: marsBranch
+    });
+});
 
 app.listen(3001, () => console.log('Blocktree Demo on http://localhost:3001'));
