@@ -4,7 +4,7 @@ app.use(express.json());
 
 // Add CORS middleware
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://demo.blocktree.com"); // Match your front-end domain
+    res.header("Access-Control-Allow-Origin", "https://blocktree.com"); // Match front-end origin
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type");
     if (req.method === "OPTIONS") {
